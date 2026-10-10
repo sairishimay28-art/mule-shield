@@ -1,0 +1,21 @@
+{
+  "name": "MULE SHIELD",
+  "short_name": "MuleShield",
+  "description": "Multi-Agent Financial Intelligence and Money Mule Ring Detection",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#102A56",
+  "theme_color": "#155EEF",
+  "icons": [
+    {
+      "src": "assets/mule-shield-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "assets/mule-shield-logo.png",
+      "sizes": "500x479",
+      "type": "image/png"
+    }
+  ]
+}

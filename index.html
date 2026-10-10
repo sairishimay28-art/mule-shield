@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MULE SHIELD — Financial Intelligence &amp; Money Mule Investigation Platform</title>
+  <meta name="description"
+    content="AI-assisted financial intelligence, Louvain community detection, and money mule ring forensic investigation platform.">
+  <meta name="theme-color" content="#102A56">
+
+  <!-- Favicons and App Manifest -->
+  <link rel="icon" type="image/svg+xml" href="assets/mule-shield-logo.svg">
+  <link rel="alternate icon" type="image/png" href="assets/mule-shield-logo.png">
+  <link rel="apple-touch-icon" href="assets/mule-shield-logo.png">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Fonts & Stylesheet -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="frontend/css/styles.css">
+</head>
+
+<body>
+
+  <!-- Global Loading Overlay -->
+  <div id="app-loading-overlay" class="app-loading-overlay" aria-hidden="true">
+    <div class="loading-content">
+      <div class="loading-emblem-container">
+        <div class="loading-spinner-ring"></div>
+        <img src="assets/mule-shield-logo.svg" onerror="this.onerror=null;this.src='assets/mule-shield-logo.png';"
+          alt="MULE SHIELD Emblem" class="mule-shield-logo-img mule-shield-logo--loading" />
+      </div>
+      <div class="loading-title">MULE SHIELD</div>
+      <div class="loading-subtitle" id="loading-subtitle">Executing Multi-Agent Graph Algorithms &amp; Louvain
+        Modularity...</div>
+      <div class="loading-bar">
+        <div class="loading-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Centered Forensic Processing Animation Overlay (Validate & Run) -->
+  <div id="forensic-processing-overlay" class="forensic-processing-overlay" aria-hidden="true" style="display:none;">
+    <div class="forensic-overlay-content">
+      <div class="forensic-emblem-container">
+        <img src="assets/mule-shield-logo.svg" onerror="this.onerror=null;this.src='assets/mule-shield-logo.png';"
+          alt="MULE SHIELD Emblem" class="mule-shield-logo-img mule-shield-logo--loading" />
+      </div>
+      <div class="forensic-overlay-title">MULE SHIELD</div>
+
+      <!-- Five Horizontal Icon Boxes with Connecting Line -->
+      <div class="forensic-stages-container">
+        <div class="forensic-track-line">
+          <div class="forensic-track-progress" id="forensic-track-progress"></div>
+        </div>
+
+        <!-- 1. Database Icon: CSV validation and data loading -->
+        <div class="forensic-stage-box" id="forensic-stage-1" data-stage="1" title="CSV Validation &amp; Ingestion">
+          <svg class="forensic-stage-svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+            <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"></path>
+          </svg>
+          <span class="forensic-stage-check" id="forensic-check-1">✓</span>
+        </div>
+
+        <!-- 2. Network/Graph Icon: Graph and Louvain analysis -->
+        <div class="forensic-stage-box" id="forensic-stage-2" data-stage="2" title="Graph &amp; Louvain Analysis">
+          <svg class="forensic-stage-svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="6" r="3"></circle>
+            <path d="M12 9v5"></path>
+            <path d="M7 14h10"></path>
+            <path d="M7 14v2"></path>
+            <path d="M17 14v2"></path>
+            <circle cx="7" cy="18" r="2.5"></circle>
+            <circle cx="17" cy="18" r="2.5"></circle>
+          </svg>
+          <span class="forensic-stage-check" id="forensic-check-2">✓</span>
+        </div>
+
+        <!-- 3. Scan/Search Icon: Suspicious pattern detection -->
+        <div class="forensic-stage-box" id="forensic-stage-3" data-stage="3" title="Suspicious Pattern Detection">
+          <svg class="forensic-stage-svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+            <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+            <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+            <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+            <circle cx="11.5" cy="11.5" r="3"></circle>
+            <line x1="13.7" y1="13.7" x2="16.5" y2="16.5"></line>
+          </svg>
+          <span class="forensic-stage-check" id="forensic-check-3">✓</span>
+        </div>
+
+        <!-- 4. Shield Alert Icon: Risk scoring -->
+        <div class="forensic-stage-box" id="forensic-stage-4" data-stage="4" title="Risk Scoring">
+          <svg class="forensic-stage-svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span class="forensic-stage-check" id="forensic-check-4">✓</span>
+        </div>
+
+        <!-- 5. Document Search Icon: Investigation report generation -->
+        <div class="forensic-stage-box" id="forensic-stage-5" data-stage="5" title="Investigation Report Generation">
+          <svg class="forensic-stage-svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h6"></path>
+            <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+            <path d="M20 8v5"></path>
+            <circle cx="16" cy="16" r="3"></circle>
+            <line x1="18.2" y1="18.2" x2="21" y2="21"></line>
+          </svg>
+          <span class="forensic-stage-check" id="forensic-check-5">✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Shell -->
+  <div class="app-layout" data-active-page="overview">
+
+    <!-- Left Navigation Sidebar (Compact Enterprise Design) -->
+    <aside class="sidebar" id="app-sidebar">
+      <div class="brand-container" id="sidebar-brand-container">
+        <div class="brand-logo-wrapper" title="MULE SHIELD Financial Forensics">
+          <img src="assets/mule-shield-logo.svg" onerror="this.onerror=null;this.src='assets/mule-shield-logo.png';"
+            alt="MULE SHIELD Logo" class="mule-shield-logo-img mule-shield-logo--sidebar" />
+        </div>
+        <div class="brand-info">
+          <h2>MULE SHIELD</h2>
+          <span class="badge">FINANCIAL INTELLIGENCE</span>
+        </div>
+        <button id="btn-sidebar-close" class="btn-icon sidebar-close-btn" aria-label="Close navigation drawer">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Navigation Links with Professional Vector Icons -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <div class="nav-section-label">INVESTIGATION CORE</div>
+
+        <a href="#overview" class="nav-item active" data-page="overview" id="nav-overview">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+            <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+            <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+            <rect width="7" height="5" x="3" y="16" rx="1"></rect>
+          </svg>
+          <span class="nav-text">Home Overview</span>
+        </a>
+
+        <a href="#transactions" class="nav-item" data-page="transactions" id="nav-transactions">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"></path>
+            <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path>
+            <path d="M12 6v12"></path>
+          </svg>
+          <span class="nav-text">Transactions</span>
+        </a>
+
+        <a href="#network" class="nav-item" data-page="network" id="nav-network">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line>
+            <line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line>
+          </svg>
+          <span class="nav-text">Network Intelligence</span>
+        </a>
+
+        <a href="#mule-rings" class="nav-item" data-page="mule-rings" id="nav-mule-rings">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="4"></circle>
+            <line x1="4.93" x2="9.17" y1="4.93" y2="9.17"></line>
+            <line x1="14.83" x2="19.07" y1="14.83" y2="19.07"></line>
+            <line x1="14.83" x2="19.07" y1="9.17" y2="4.93"></line>
+            <line x1="4.93" x2="9.17" y1="19.07" y2="14.83"></line>
+          </svg>
+          <span class="nav-text">Mule Ring Detection</span>
+          <span class="nav-badge alert-badge" id="sidebar-ring-badge" style="display:none;">0</span>
+        </a>
+
+        <a href="#alerts" class="nav-item" data-page="alerts" id="nav-alerts">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path>
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+          </svg>
+          <span class="nav-text">Risk &amp; Alerts</span>
+          <span class="nav-badge warning-badge" id="sidebar-alert-badge" style="display:none;">0</span>
+        </a>
+
+        <a href="#cases" class="nav-item" data-page="cases" id="nav-cases">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 8 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z">
+            </path>
+          </svg>
+          <span class="nav-text">Investigation Cases</span>
+        </a>
+
+        <a href="#reports" class="nav-item" data-page="reports" id="nav-reports">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" x2="8" y1="13" y2="13"></line>
+            <line x1="16" x2="8" y1="17" y2="17"></line>
+            <line x1="10" x2="8" y1="9" y2="9"></line>
+          </svg>
+          <span class="nav-text">Reports &amp; Exports</span>
+        </a>
+
+        <div class="nav-section-label">SYSTEM &amp; DATA</div>
+
+        <a href="#data" class="nav-item" data-page="data" id="nav-data">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+            <path d="M3 5V19A9 3 0 0 0 21 19V5"></path>
+            <path d="M3 12A9 3 0 0 0 21 12"></path>
+          </svg>
+          <span class="nav-text">Data Management</span>
+        </a>
+
+        <a href="#settings" class="nav-item" data-page="settings" id="nav-settings">
+          <svg class="nav-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
+            </path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <span class="nav-text">Settings</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Status Footer -->
+      <div class="sidebar-footer">
+        <div class="engine-status">
+          <span class="status-dot" id="sidebar-status-dot"></span>
+          <span class="status-label" id="sidebar-engine-status">Backend Connected</span>
+        </div>
+        <div class="sidebar-subtext" id="sidebar-subtext">Louvain Engine v1.0.0</div>
+      </div>
+    </aside>
+
+    <!-- Sidebar Backdrop for Mobile Screens -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- Scrollable Main Content Body -->
+      <div class="content-body">
+
+        <!-- ========================================================= -->
+        <!-- 1. OVERVIEW PAGE                                          -->
+        <!-- ========================================================= -->
+        <section id="page-overview" class="page-section active">
+          <!-- Welcome Card: contains introductory brand heading and quick actions -->
+          <section class="welcome-card" aria-labelledby="welcome-card-title">
+            <div class="welcome-card-content">
+              <span class="welcome-eyebrow">WELCOME TO MULE SHIELD</span>
+              <h3 id="welcome-card-title">Your Financial Intelligence Workspace</h3>
+            </div>
+            <div class="welcome-card-actions">
+              <button class="btn btn-outline" id="btn-export-overview-summary"
+                title="Download investigation summary dossier (JSON)">Export Summary</button>
+              <button id="btn-topbar-upload" class="btn btn-primary" title="Import new financial transactions">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" x2="12" y1="3" y2="15"></line>
+                </svg>
+                Upload Dataset
+              </button>
+            </div>
+          </section>
+
+          <!-- Empty Dataset Banner (When awaiting transaction ledger) -->
+          <div id="overview-empty-banner" class="empty-dataset-card mb-4">
+            <div class="empty-dataset-icon">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="var(--primary-blue)" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" x2="12" y1="3" y2="15"></line>
+              </svg>
+            </div>
+            <div class="empty-dataset-text">
+              <h3>No Transaction Dataset Loaded</h3>
+              <p>Upload a transaction CSV ledger in Data Management to execute Louvain community detection, graph cycle
+                identification, and multi-agent risk scoring.</p>
+            </div>
+            <div class="empty-dataset-actions">
+              <button class="btn btn-primary" id="btn-overview-banner-upload">Upload Transaction CSV</button>
+            </div>
+          </div>
+
+          <!-- KPI Metric Cards Grid (6 cards in one responsive row) -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Transactions Analyzed</span>
+              </div>
+              <span class="kpi-value" id="kpi-txs">0</span>
+              <div class="kpi-footer">
+                <span class="kpi-sub" id="kpi-txs-sub">No ledger uploaded</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Monitored Volume</span>
+              </div>
+              <span class="kpi-value" id="kpi-vol">$0.00</span>
+              <div class="kpi-footer">
+                <span class="kpi-sub" id="kpi-vol-sub">Gross flow volume</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Accounts Observed</span>
+              </div>
+              <span class="kpi-value" id="kpi-accounts">0</span>
+              <div class="kpi-footer">
+                <span class="kpi-sub" id="kpi-flagged-accounts">0 Flagged for review</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Louvain Clusters</span>
+              </div>
+              <span class="kpi-value" id="kpi-comm">0</span>
+              <div class="kpi-footer">
+                <span class="kpi-sub" id="kpi-modularity">Modularity Q: --</span>
+              </div>
+            </div>
+
+            <div class="kpi-card" id="kpi-card-rings">
+              <div class="kpi-header">
+                <span class="kpi-title">Candidate Mule Rings</span>
+              </div>
+              <span class="kpi-value" id="kpi-rings">0</span>
+              <div class="kpi-footer">
+                <span class="kpi-sub" id="kpi-rings-sub">Topological loops</span>
+              </div>
+            </div>
+
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <span class="kpi-title">Investigation Cases</span>
+              </div>
+              <span class="kpi-value" id="kpi-cases">0</span>
+              <div class="kpi-footer">
+                <span class="kpi-sub" id="kpi-active-cases">0 Active dockets</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analytics Visual Charts Row -->
+          <div class="dashboard-charts-grid mt-4">
+            <!-- Liquidity Velocity Bar Chart -->
+            <div class="card chart-card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Transaction Volume Over Time</h3>
+                  <p class="subtitle">Audited flow velocity and anomalous liquidity spikes</p>
+                </div>
+              </div>
+              <div class="chart-container">
+                <div id="volume-chart-container" class="volume-bars-container">
+                  <!-- Dynamic SVG Bar Chart populated by app.js or empty placeholder -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Risk Distribution Breakdown -->
+            <div class="card chart-card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Risk Band Distribution</h3>
+                  <p class="subtitle">Proportion of monitored accounts across risk tiers</p>
+                </div>
+              </div>
+              <div class="risk-distribution-container">
+                <div class="risk-meter-bar" id="risk-meter-bar">
+                  <div class="risk-segment" style="width: 100%; background: #E2E8F0;" title="No data"></div>
+                </div>
+                <div class="risk-legend-list mt-3" id="risk-legend-list">
+                  <div class="text-secondary text-sm">No analysis performed. Ingest dataset to compute risk
+                    distribution.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account Cluster Risk Heatmap Component -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Louvain Community Risk Heatmap</h3>
+                <p class="subtitle">Aggregated risk concentration and liquidity density across Louvain partitions</p>
+              </div>
+            </div>
+            <div id="heatmap-grid" class="heatmap-container">
+              <!-- Dynamically populated by app.js -->
+            </div>
+          </div>
+
+          <!-- High-Priority Review Priorities Table -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Investigation Priorities</h3>
+                <p class="subtitle">Highest-priority account candidates requiring compliance inspection</p>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Candidate / Account</th>
+                    <th>Community</th>
+                    <th>Risk Score</th>
+                    <th>Triggered Indicators</th>
+                    <th>Last Activity</th>
+                    <th>Review Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="priorities-table-body">
+                  <!-- Dynamically populated by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Automated Multi-Agent Forensic Findings Stream -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Automated Multi-Agent Forensic Findings</h3>
+                <p class="subtitle">Analysis stream orchestrated across specialized AML inspection agents</p>
+              </div>
+              <span class="badge badge-outline" id="agent-orchestration-badge">4 AGENTS READY</span>
+            </div>
+            <div id="findings-container" class="findings-list">
+              <!-- Dynamically populated by app.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 2. TRANSACTION EXPLORER PAGE                              -->
+        <!-- ========================================================= -->
+        <section id="page-transactions" class="page-section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Transaction Explorer</h2>
+              <p class="section-desc">Inspect individual transfers, audit forensic anomalies, and filter liquidity
+                movements.</p>
+            </div>
+            <div class="header-actions" style="display:flex; gap:8px; align-items:center;">
+              <button class="btn btn-outline" id="btn-export-tx-filtered">Export Ledger CSV</button>
+              <button class="btn btn-outline" id="btn-delete-active-dataset"
+                style="color:var(--danger); border-color:var(--danger-border); display:none;"
+                title="Permanently delete active dataset from database">Delete Dataset</button>
+            </div>
+          </div>
+
+          <!-- Transaction Filter Bar -->
+          <div class="card mb-4 filter-bar-card">
+            <div class="filter-grid">
+              <div class="filter-item">
+                <label for="tx-search-box" class="filter-label">Search Ledger</label>
+                <input type="text" id="tx-search-box" placeholder="Filter by TX ID, sender or receiver..."
+                  class="input-text">
+              </div>
+              <div class="filter-item">
+                <label for="tx-category-filter" class="filter-label">Category</label>
+                <select id="tx-category-filter" class="input-select">
+                  <option value="ALL">All Categories</option>
+                  <option value="CYCLE">Circular Cycle Leg</option>
+                  <option value="SMURF">Smurfing Dispersal</option>
+                  <option value="TRANSFER">Standard Transfer</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label for="tx-risk-filter" class="filter-label">Risk Level &amp; Status</label>
+                <select id="tx-risk-filter" class="input-select">
+                  <option value="ALL">All Transactions</option>
+                  <option value="HIGH">High Risk / Suspicious (Red)</option>
+                  <option value="MEDIUM">Medium Risk / Needs Review (Orange)</option>
+                  <option value="LOW">Low Risk / Normal (Green)</option>
+                </select>
+              </div>
+              <div class="filter-item filter-actions-item">
+                <label class="filter-label">&nbsp;</label>
+                <button class="btn btn-outline" id="btn-reset-tx-filters">Reset Filters</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ingested Transaction Ledger Table -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Transaction Ledger</h3>
+                <span id="tx-table-counter" class="text-secondary text-sm">No records loaded</span>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>TX ID</th>
+                    <th>Sender Account</th>
+                    <th>Receiver Account</th>
+                    <th>Amount (USD)</th>
+                    <th>Timestamp</th>
+                    <th>Category</th>
+                    <th class="tx-cell-risk">Risk Level</th>
+                    <th>Detection Flags</th>
+                    <th>Community</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="tx-table-body">
+                  <!-- Dynamically populated by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 3. NETWORK INTELLIGENCE PAGE                              -->
+        <!-- ========================================================= -->
+        <section id="page-network" class="page-section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Network Intelligence</h2>
+              <p class="section-desc">Interactive directed liquidity graph partitioned by Louvain community detection.
+              </p>
+            </div>
+            <div class="header-actions">
+              <button class="btn btn-outline btn-sm" id="btn-graph-fit-view">Fit to View</button>
+              <button class="btn btn-outline btn-sm" id="btn-graph-reset">Reset View</button>
+            </div>
+          </div>
+
+          <!-- Network Graph Workspace Grid -->
+          <div class="network-workspace-grid">
+            <!-- Left Graph Canvas Area -->
+            <div class="card network-canvas-card">
+              <!-- Graph Toolbar -->
+              <div class="graph-toolbar">
+                <div class="toolbar-left">
+                  <div class="search-input-wrapper">
+                    <input type="text" id="graph-search-account" placeholder="Search account..."
+                      class="input-text input-sm">
+                  </div>
+                  <select id="graph-community-filter" class="input-select input-sm">
+                    <option value="ALL">All Communities</option>
+                  </select>
+                </div>
+                <div class="toolbar-right">
+                  <button class="btn-icon btn-sm" id="btn-zoom-in" title="Zoom In">+</button>
+                  <button class="btn-icon btn-sm" id="btn-zoom-out" title="Zoom Out">−</button>
+                  <button class="btn-toggle btn-sm active" id="btn-toggle-labels">Labels</button>
+                  <button class="btn-toggle btn-sm active" id="btn-toggle-rings">Rings</button>
+                </div>
+              </div>
+
+              <!-- Interactive Canvas -->
+              <div id="graph-viewport" class="graph-canvas-container">
+                <canvas id="network-canvas" width="900" height="520"></canvas>
+                <div id="graph-empty-message" class="graph-empty-overlay">
+                  <p>No graph network data available. Upload a dataset in Data Management to construct transaction
+                    graph.</p>
+                </div>
+                <div id="graph-tooltip" class="graph-tooltip"></div>
+              </div>
+
+              <!-- Graph Footer Legend -->
+              <div class="graph-legend-footer">
+                <div class="legend-group">
+                  <span class="legend-title">Node Risk:</span>
+                  <span class="legend-item"><span class="dot" style="background:#DC2626;"></span> High / Critical</span>
+                  <span class="legend-item"><span class="dot" style="background:#F59E0B;"></span> Medium</span>
+                  <span class="legend-item"><span class="dot" style="background:#16A34A;"></span> Low</span>
+                </div>
+                <div class="legend-group">
+                  <span class="legend-title">Edge Lines:</span>
+                  <span class="legend-item"><span class="edge-sample red-dashed"></span> Suspect Ring Flow</span>
+                  <span class="legend-item"><span class="edge-sample gray-solid"></span> Nominal Transfer</span>
+                </div>
+                <div class="legend-group">
+                  <span class="legend-title">Communities:</span>
+                  <span id="graph-legend-communities" class="text-secondary text-xs">Awaiting dataset analysis</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Inspector Side Panel -->
+            <div class="card network-inspector-card" id="network-inspector-panel">
+              <div class="card-header border-bottom">
+                <h3 class="card-title" id="inspector-title">Entity Inspector</h3>
+                <span class="badge badge-outline" id="inspector-badge">SELECT NODE</span>
+              </div>
+              <div id="inspector-content" class="inspector-body">
+                <div class="empty-inspector">
+                  <p class="text-secondary text-sm">Click on any account node or directed edge in the graph to inspect
+                    entity attributes, balance, and risk indicators.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 4. MULE RING DETECTION PAGE                               -->
+        <!-- ========================================================= -->
+        <section id="page-mule-rings" class="page-section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Mule Ring Detection</h2>
+              <p class="section-desc">Investigate suspicious transaction patterns, circular loops, and potentially
+                coordinated account networks.</p>
+            </div>
+            <div class="header-actions">
+              <span class="badge badge-outline" id="rings-badge-count">0 RINGS FLAGGED</span>
+            </div>
+          </div>
+
+          <!-- Discovered Rings Grid Container -->
+          <div id="rings-list-container" class="rings-grid">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 5. RISK & ALERTS PAGE                                     -->
+        <!-- ========================================================= -->
+        <section id="page-alerts" class="page-section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Risk &amp; Alerts</h2>
+              <p class="section-desc">Prioritized triage queue of suspicious transactions and multi-agent anomalies.</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn btn-sm btn-outline" id="btn-mark-all-read">Mark All Reviewed</button>
+            </div>
+          </div>
+
+          <!-- Alert Filters Bar -->
+          <div class="card mb-4 filter-bar-card">
+            <div class="filter-grid">
+              <div class="filter-item">
+                <label for="alert-severity-filter" class="filter-label">Filter Severity</label>
+                <select id="alert-severity-filter" class="input-select">
+                  <option value="ALL">All Severities</option>
+                  <option value="CRITICAL">Critical Severity</option>
+                  <option value="HIGH">High Severity</option>
+                  <option value="MEDIUM">Medium Severity</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label for="alert-status-filter" class="filter-label">Triage Status</label>
+                <select id="alert-status-filter" class="input-select">
+                  <option value="ALL">All Statuses</option>
+                  <option value="NEW">New (Unreviewed)</option>
+                  <option value="UNDER_REVIEW">Under Review</option>
+                  <option value="ESCALATED">Escalated to SAR</option>
+                  <option value="DISMISSED">Dismissed</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Operational Risk Alerts List -->
+          <div id="alerts-list-container" class="alerts-list">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 6. INVESTIGATION CASES PAGE                               -->
+        <!-- ========================================================= -->
+        <section id="page-cases" class="page-section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Investigation Cases</h2>
+              <p class="section-desc">Compliance case dockets, suspect entity dossiers, and audit management.</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn btn-primary" id="btn-new-case">+ New Case Docket</button>
+            </div>
+          </div>
+
+          <!-- Case Dockets Table & Cards -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Active Investigation Dockets</h3>
+            </div>
+            <div id="cases-list-container" class="cases-list">
+              <!-- Dynamically populated by app.js -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 7. REPORTS & EXPORTS PAGE                                 -->
+        <!-- ========================================================= -->
+        <section id="page-reports" class="page-section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Reports &amp; Exports</h2>
+              <p class="section-desc">Generate official compliance dossiers, SAR documentation, and audited transaction
+                ledgers.</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn btn-outline" id="btn-print-report" onclick="window.print()">Print / Save PDF</button>
+              <button class="btn btn-primary" id="btn-export-json-web">Export Intelligence JSON</button>
+            </div>
+          </div>
+
+          <!-- Official Certified Dossier Report Card -->
+          <div class="card report-card" id="printable-report">
+            <div class="report-header">
+              <div class="report-brand">
+                <div class="report-logo-box">
+                  <img src="assets/mule-shield-logo.svg"
+                    onerror="this.onerror=null;this.src='assets/mule-shield-logo.png';" alt="MULE SHIELD logo"
+                    class="mule-shield-logo-img mule-shield-logo--report" />
+                </div>
+                <div>
+                  <h2 class="report-brand-title">MULE SHIELD FORENSICS</h2>
+                  <span class="report-brand-sub">AUDITED FINANCIAL INTELLIGENCE DOSSIER</span>
+                </div>
+              </div>
+              <div class="report-meta">
+                <div class="report-id">DOCKET: <span id="report-gen-id">MS-AML-PENDING</span></div>
+                <div class="report-date" id="report-date">Awaiting Analysis</div>
+                <div class="report-badge">COMPLIANCE REVIEW GRADE</div>
+              </div>
+            </div>
+
+            <hr class="report-divider">
+
+            <div class="report-section">
+              <h4 class="report-heading">1. Executive Summary &amp; Forensic Scope</h4>
+              <p id="report-summary-text" class="report-text">No dataset analyzed. Ingest transactions to generate
+                compliance summary.</p>
+            </div>
+
+            <div class="report-section">
+              <h4 class="report-heading">2. Louvain Modularity &amp; Community Topology</h4>
+              <div class="table-responsive">
+                <table class="report-table">
+                  <thead>
+                    <tr>
+                      <th>Cluster ID</th>
+                      <th>Account Count</th>
+                      <th>Gross Volume</th>
+                      <th>Internal Flow %</th>
+                      <th>Topology Classification</th>
+                    </tr>
+                  </thead>
+                  <tbody id="report-communities-table">
+                    <tr>
+                      <td colspan="5" class="text-center text-secondary">No community data available.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="report-section">
+              <h4 class="report-heading">3. Confirmed Candidate Mule Rings</h4>
+              <div id="report-rings-summary" class="report-rings-box">
+                <p class="text-secondary text-sm">No candidate rings flagged in current ledger.</p>
+              </div>
+            </div>
+
+            <div class="report-section">
+              <h4 class="report-heading">4. Legal &amp; Regulatory Notice</h4>
+              <p class="report-disclaimer-text">
+                Outputs produced by MULE SHIELD represent heuristic anomaly detection and topological graph analysis for
+                decision support. They do not constitute conclusive judicial proof of criminal activity. All flagged
+                accounts and suspect rings must undergo independent manual verification by certified AML compliance
+                officers before filing a formal Suspicious Activity Report (SAR).
+              </p>
+            </div>
+
+            <div class="report-actions-bar no-print">
+              <button class="btn btn-primary" id="btn-export-csv-web">Export Transactions CSV</button>
+              <button class="btn btn-outline" id="btn-export-json-web-2">Export Forensic JSON</button>
+              <button class="btn btn-outline" onclick="window.print()">Print Dossier</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 8. DATA MANAGEMENT PAGE                                   -->
+        <!-- ========================================================= -->
+        <section id="page-data" class="page-section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Data Management</h2>
+              <p class="section-desc">Ingest transaction records, perform client-side schema validation, and inspect
+                data fidelity.</p>
+            </div>
+          </div>
+
+          <!-- Dataset Upload & Validation Workspace -->
+          <div class="card mb-4" id="data-ingestion-card">
+            <div class="ingestion-header">
+              <h3 class="card-title">Transaction Dataset Ingestion</h3>
+              <p class="subtitle">Upload or paste CSV transactions. Pre-flight schema validation checks column aliases,
+                formats, and integrity.</p>
+            </div>
+
+            <!-- Drag and Drop Dropzone -->
+            <div id="csv-dropzone" class="upload-dropzone">
+              <div class="dropzone-content">
+                <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="var(--primary-blue)"
+                  stroke-width="1.6" class="dropzone-svg-icon">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" x2="12" y1="3" y2="15"></line>
+                </svg>
+                <div class="dropzone-title">Drag &amp; Drop CSV File Here</div>
+                <div class="dropzone-subtitle">or click to browse from local filesystem (max 25MB)</div>
+                <input type="file" id="csv-file-input" accept=".csv,.txt" style="display: none;">
+              </div>
+            </div>
+
+            <div class="or-divider"><span>OR PASTE RAW CSV</span></div>
+
+            <!-- Raw CSV Textarea -->
+            <div class="raw-csv-section">
+              <div class="raw-csv-controls">
+                <button class="btn btn-outline" id="btn-clear-csv-text">Clear</button>
+              </div>
+              <textarea id="raw-csv-area" rows="8" class="textarea-field"
+                placeholder="transaction_id,sender_id,receiver_id,amount,timestamp..."></textarea>
+            </div>
+
+            <!-- Pre-Flight Validation Feedback Box -->
+            <div id="client-csv-validation-box" class="validation-box" style="display:none;">
+              <div id="validation-box-header" class="validation-box-title"></div>
+              <div id="validation-box-details" class="validation-box-content"></div>
+            </div>
+
+            <div class="data-action-buttons">
+              <button class="btn btn-outline" id="btn-validate-csv">Validate CSV Integrity</button>
+              <button class="btn btn-primary" id="btn-submit-csv">Validate &amp; Run Forensics</button>
+            </div>
+          </div>
+
+          <!-- Supabase Database Connection & Persistence Status -->
+          <div class="card mb-4" id="supabase-status-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div>
+                <h3 class="card-title" style="margin-bottom:4px;">Supabase PostgreSQL Storage Engine</h3>
+                <p class="subtitle" style="margin-bottom:0;">Persistent relational ledger storage with Row Level
+                  Security (RLS) enforcement.</p>
+              </div>
+              <div id="db-status-badge-container">
+                <span class="badge" id="db-status-badge"
+                  style="background:rgba(30,58,138,0.15); color:var(--primary-blue); border:1px solid rgba(37,99,235,0.3); font-weight:600; padding:6px 12px; border-radius:6px;">Checking
+                  Database...</span>
+              </div>
+            </div>
+
+            <div
+              style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-top:16px; padding-top:16px; border-top:1px solid var(--border-subtle);">
+              <div>
+                <div
+                  style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:600; letter-spacing:0.05em;">
+                  PostgreSQL Engine</div>
+                <div id="db-provider-val"
+                  style="font-size:0.95rem; font-weight:600; color:var(--text-primary); margin-top:2px;">Supabase Cloud
+                </div>
+              </div>
+              <div>
+                <div
+                  style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:600; letter-spacing:0.05em;">
+                  Security Architecture</div>
+                <div style="font-size:0.95rem; font-weight:600; color:var(--text-primary); margin-top:2px;">RLS Enabled
+                  &bull; Backend Service Role</div>
+              </div>
+              <div>
+                <div
+                  style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:600; letter-spacing:0.05em;">
+                  Logical Entities</div>
+                <div style="font-size:0.95rem; font-weight:600; color:var(--text-primary); margin-top:2px;">11 Tables
+                  (Datasets, Txs, Rings, Runs)</div>
+              </div>
+              <div>
+                <div
+                  style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:600; letter-spacing:0.05em;">
+                  Storage Buckets</div>
+                <div style="font-size:0.95rem; font-weight:600; color:var(--text-primary); margin-top:2px;">Private
+                  (datasets, reports)</div>
+              </div>
+            </div>
+            <div id="db-connection-note" style="margin-top:12px; font-size:0.8rem; color:var(--text-secondary);"></div>
+          </div>
+
+          <!-- Persisted Datasets History -->
+          <div class="card mb-4" id="persisted-datasets-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <h3 class="card-title" style="margin-bottom:0;">Persisted Ingestion History</h3>
+              <button class="btn btn-xs btn-outline" id="btn-refresh-datasets">Refresh History</button>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table" id="table-persisted-datasets">
+                <thead>
+                  <tr>
+                    <th>Dataset Name</th>
+                    <th>Dataset ID / Ref</th>
+                    <th>Ingested At</th>
+                    <th>Transactions</th>
+                    <th>Analysis Status</th>
+                    <th>Database Sync</th>
+                    <th style="text-align:right;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-persisted-datasets">
+                  <tr>
+                    <td colspan="7" style="text-align:center; color:var(--text-muted); padding:20px;">No persistent
+                      datasets loaded yet. Ingest a CSV above to store in database.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- 9. SETTINGS PAGE                                          -->
+        <!-- ========================================================= -->
+        <section id="page-settings" class="page-section">
+          <div class="section-header">
+            <div>
+              <h2 class="section-title">Analytical Settings</h2>
+              <p class="section-desc">Fine-tune Louvain modularity resolution, structuring thresholds, and visualization
+                preferences.</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn btn-primary btn-sm" id="btn-save-settings">Save Preferences</button>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            <!-- Algorithmic Parameters -->
+            <div class="card">
+              <h3 class="card-title">Algorithmic Hyperparameters</h3>
+              <p class="subtitle">Controls Louvain modularity clustering and rule thresholds</p>
+
+              <div class="setting-item mt-3">
+                <div class="setting-info">
+                  <label for="louvain-resolution" class="setting-label">Louvain Modularity Resolution (&gamma;)</label>
+                  <p class="setting-desc">Higher values produce smaller, denser clusters; lower values yield larger
+                    groupings.</p>
+                </div>
+                <div class="setting-control">
+                  <input type="range" id="louvain-resolution" min="0.2" max="2.0" step="0.1" value="1.0"
+                    class="input-range">
+                  <span id="louvain-res-val" class="range-value">1.0</span>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <label for="smurfing-threshold" class="setting-label">Structuring Detection Ceiling ($)</label>
+                  <p class="setting-desc">Flag transfers structured just beneath regulatory reporting limits.</p>
+                </div>
+                <div class="setting-control">
+                  <input type="number" id="smurfing-threshold" value="10000" class="input-text input-sm"
+                    style="width: 100px;">
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <label for="relay-window" class="setting-label">High-Velocity Relay Window (Hours)</label>
+                  <p class="setting-desc">Time delta between rapid inflow and onward forwarding to identify pass-through
+                    mules.</p>
+                </div>
+                <div class="setting-control">
+                  <input type="number" id="relay-window" value="24" class="input-text input-sm" style="width: 100px;">
+                </div>
+              </div>
+            </div>
+
+            <!-- Visualization Preferences -->
+            <div class="card">
+              <h3 class="card-title">Graph Visualization Preferences</h3>
+              <p class="subtitle">Configure canvas performance and rendering physics</p>
+
+              <div class="setting-item mt-3">
+                <div class="setting-info">
+                  <span class="setting-label">Node Layout Mode</span>
+                  <p class="setting-desc">Group nodes organically by community cluster.</p>
+                </div>
+                <div class="setting-control">
+                  <select id="setting-layout-mode" class="input-select input-sm">
+                    <option value="COMMUNITY">Community Cluster</option>
+                    <option value="FORCE">Force-Directed</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <span class="setting-label">Edge Direction Indicators</span>
+                  <p class="setting-desc">Render dynamic arrowheads representing money flow.</p>
+                </div>
+                <div class="setting-control">
+                  <input type="checkbox" id="setting-edge-arrows" checked class="input-checkbox">
+                </div>
+              </div>
+            </div>
+
+            <!-- Legal and Compliance Disclaimer Card -->
+            <div class="card full-width-card disclaimer-card">
+              <div class="disclaimer-header">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"></path>
+                  <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"></path>
+                  <path d="M7 21h10"></path>
+                  <path d="M12 3v18"></path>
+                  <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"></path>
+                </svg>
+                <h4>CRITICAL LEGAL &amp; REGULATORY DISCLAIMER</h4>
+              </div>
+              <p class="disclaimer-body">
+                MULE SHIELD is an analytical decision-support instrument utilizing algorithmic graph theory, Louvain
+                community detection, and multi-agent heuristics. Its outputs reflect mathematical anomalies and
+                suspicious pattern indicators. They do <strong>NOT</strong> constitute conclusive legal evidence or
+                judicial findings of money laundering, fraud, or illicit conduct. All determinations require independent
+                human investigation and audit by certified financial crime compliance personnel prior to any regulatory
+                or statutory escalation.
+              </p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Slide-Over Drawer: Transaction Details -->
+  <div id="tx-detail-drawer" class="drawer">
+    <div class="drawer-header">
+      <div>
+        <h3 class="drawer-title" id="drawer-tx-title">Transaction Details</h3>
+        <span class="text-secondary text-xs" id="drawer-tx-sub">Forensic Breakdown</span>
+      </div>
+      <button class="drawer-close" id="btn-close-tx-drawer" aria-label="Close drawer">✕</button>
+    </div>
+    <div class="drawer-body" id="drawer-tx-body">
+      <!-- Populated dynamically by app.js -->
+    </div>
+  </div>
+  <div id="drawer-backdrop" class="drawer-backdrop"></div>
+
+  <!-- Modal: Create New Investigation Case -->
+  <div id="modal-new-case" class="modal-dialog-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Create New Investigation Docket</h3>
+        <button class="modal-close" id="btn-close-case-modal">✕</button>
+      </div>
+      <form id="form-new-case" class="modal-body">
+        <div class="form-group">
+          <label for="case-title-input" class="form-label">Docket Title</label>
+          <input type="text" id="case-title-input" class="input-text" placeholder="e.g. Operation Sovereign Ring"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="case-priority-select" class="form-label">Investigation Priority</label>
+          <select id="case-priority-select" class="input-select">
+            <option value="CRITICAL">Critical (Immediate SAR Escalate)</option>
+            <option value="HIGH" selected>High (Enhanced Due Diligence)</option>
+            <option value="MEDIUM">Medium (Routine Review)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="case-accounts-input" class="form-label">Linked Suspect Accounts (comma separated)</label>
+          <input type="text" id="case-accounts-input" class="input-text" placeholder="ACC_MULE_ALPHA, ACC_MULE_BETA"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="case-desc-input" class="form-label">Investigator Preliminary Notes</label>
+          <textarea id="case-desc-input" rows="3" class="textarea-field"
+            placeholder="Observed topological loop with high velocity pass-through..."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="btn-cancel-case-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-case-modal">Create Docket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Delete Single Dataset Confirmation -->
+  <div id="modal-delete-dataset" class="modal-dialog-backdrop">
+    <div class="modal-dialog" style="max-width: 500px;">
+      <div class="modal-header" style="border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+        <h3 class="modal-title" style="color: var(--danger); display: flex; align-items: center; gap: 8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18m-2 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6" />
+          </svg>
+          Confirm Permanent Dataset Deletion
+        </h3>
+        <button class="modal-close" id="btn-close-delete-single-modal">✕</button>
+      </div>
+      <div class="modal-body" style="padding-top: 16px;">
+        <p style="margin-bottom: 12px; font-size: 13.5px; line-height: 1.5;">
+          Are you sure you want to permanently delete dataset <strong id="delete-target-dataset-name"
+            style="color: var(--primary-blue);">Dataset</strong>?
+        </p>
+        <div
+          style="background: var(--surface-muted); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 14px; font-size: 12px;">
+          <div><strong>Dataset ID:</strong> <code id="delete-target-dataset-id"
+              style="font-family: var(--font-mono); color: var(--text-secondary);">uuid</code></div>
+          <div style="margin-top: 4px;"><strong>Transactions:</strong> <span id="delete-target-dataset-txs"
+              style="font-weight: 600;">0</span> records</div>
+        </div>
+        <div
+          style="background: var(--danger-bg); border: 1px solid var(--danger-border); border-radius: var(--radius-sm); padding: 12px; color: var(--danger); font-size: 12.5px; line-height: 1.4;">
+          <strong>Permanent Database Action:</strong> This will delete all transactions, Louvain graph clusters, risk
+          scores, suspicious pattern findings, and investigation reports associated exclusively with this dataset from
+          Supabase PostgreSQL. This action cannot be undone.
+        </div>
+      </div>
+      <div class="modal-footer"
+        style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px;">
+        <button type="button" class="btn btn-outline" id="btn-cancel-delete-single">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btn-confirm-delete-single"
+          style="background: var(--danger); border-color: var(--danger); color: #fff;">Permanently Delete
+          Dataset</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Application Scripts -->
+  <script src="frontend/js/logo.js"></script>
+  <script src="frontend/js/csvValidator.js"></script>
+  <script src="frontend/js/app.js"></script>
+</body>
+
+</html>
