@@ -145,8 +145,8 @@
     // Check if running on remote static host without configured backend URL
     if (!base && typeof window !== 'undefined' && window.location) {
       const host = window.location.hostname;
-      const isLocal = host === 'localhost' || host === '127.0.0.1' || host === '' || host === '0.0.0.0';
-      if (!isLocal && !window.__muleShieldWarnedNoApi) {
+      const isUnified = host === 'localhost' || host === '127.0.0.1' || host === '' || host === '0.0.0.0' || host.endsWith('.vercel.app') || host.endsWith('.trycloudflare.com');
+      if (!isUnified && !window.__muleShieldWarnedNoApi) {
         console.warn('[MULE SHIELD] Cloud deployment notice: No backend API_BASE_URL is configured. Set window.__MULE_SHIELD_CONFIG__.API_BASE_URL in frontend/js/config.js, via meta tag, or environment build script.');
         window.__muleShieldWarnedNoApi = true;
       }

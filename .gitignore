@@ -22,3 +22,6 @@ Thumbs.db
 dist/
 coverage/
 *.log
+bin/
+tunnel_info.json
+.tunnel_url
