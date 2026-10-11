@@ -834,6 +834,10 @@ class MuleShieldHandler(BaseHTTPRequestHandler):
         if clean_origin.startswith("http://localhost:") or clean_origin.startswith("http://127.0.0.1:"):
             return origin
 
+        # Cloudflare Tunnel origin match (e.g. *.trycloudflare.com)
+        if clean_origin.endswith(".trycloudflare.com"):
+            return origin
+
         return None
 
     def _apply_cors_headers(self, allow_credentials=True):
@@ -1463,6 +1467,9 @@ class MuleShieldHandler(BaseHTTPRequestHandler):
                 }, status=500)
         else:
             self.send_json({"error": "Method not allowed on this path"}, status=405)
+
+# Vercel Serverless / Service Handler Export
+handler = MuleShieldHandler
 
 if __name__ == "__main__":
     print(f"Starting Mule Shield Analytical Backend on http://{HOST}:{PORT}")

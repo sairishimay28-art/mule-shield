@@ -35,28 +35,55 @@ function getPythonExecutable() {
 const pythonCmd = getPythonExecutable();
 console.log(`[1/5] Using Python runtime: ${pythonCmd}`);
 
-// 2. Start Python analytical backend
-console.log(`[2/5] Starting Python Analytical Engine on port ${BACKEND_PORT}...`);
-const backendProcess = spawn(pythonCmd, ['backend/main.py'], {
-  cwd: ROOT_DIR,
-  env: {
-    ...process.env,
-    PORT: String(BACKEND_PORT),
-    HOST: '127.0.0.1'
-  },
-  stdio: 'inherit'
-});
+// 2. Start Python analytical backend (or reuse existing)
+let backendProcess = null;
 
-backendProcess.on('error', (err) => {
-  console.warn(`[Backend Notice] Python background runner: ${err.message}`);
-});
+function startBackendIfNeeded(callback) {
+  const req = http.get({
+    hostname: '127.0.0.1',
+    port: BACKEND_PORT,
+    path: '/api/health',
+    timeout: 800
+  }, (res) => {
+    if (res.statusCode === 200) {
+      console.log(`[2/5] Python Analytical Engine is already running on port ${BACKEND_PORT}.`);
+      return callback();
+    }
+    spawnBackend(callback);
+  });
+  req.on('error', () => spawnBackend(callback));
+  req.on('timeout', () => {
+    req.destroy();
+    spawnBackend(callback);
+  });
+}
 
-backendProcess.on('exit', (code) => {
-  if (code && code !== 0) {
-    console.warn(`[Backend Notice] Analytical process exited with code ${code}.`);
-  }
-});
+function spawnBackend(callback) {
+  console.log(`[2/5] Starting Python Analytical Engine on port ${BACKEND_PORT}...`);
+  backendProcess = spawn(pythonCmd, ['backend/main.py'], {
+    cwd: ROOT_DIR,
+    env: {
+      ...process.env,
+      PORT: String(BACKEND_PORT),
+      HOST: '127.0.0.1'
+    },
+    stdio: 'inherit'
+  });
 
+  backendProcess.on('error', (err) => {
+    console.warn(`[Backend Notice] Python background runner: ${err.message}`);
+  });
+
+  backendProcess.on('exit', (code) => {
+    if (code && code !== 0) {
+      console.warn(`[Backend Notice] Analytical process exited with code ${code}.`);
+    }
+  });
+
+  callback();
+}
+
+startBackendIfNeeded(() => {
 // 3. Start lightweight Node.js HTTP Server for Frontend
 console.log(`[3/5] Starting Frontend Server on port ${FRONTEND_PORT}...`);
 
@@ -79,7 +106,13 @@ const server = http.createServer((req, res) => {
       port: BACKEND_PORT,
       path: req.url,
       method: req.method,
-      headers: req.headers
+      headers: {
+        ...req.headers,
+        host: `127.0.0.1:${BACKEND_PORT}`,
+        'x-forwarded-host': req.headers.host || '',
+        'x-forwarded-proto': req.headers['x-forwarded-proto'] || (req.socket.encrypted ? 'https' : 'http'),
+        'x-forwarded-for': req.headers['x-forwarded-for'] || req.socket.remoteAddress || ''
+      }
     }, (proxyRes) => {
       res.writeHead(proxyRes.statusCode, proxyRes.headers);
       proxyRes.pipe(res);
@@ -167,11 +200,14 @@ server.listen(FRONTEND_PORT, () => {
 function cleanup() {
   console.log('\nShutting down MULE SHIELD services...');
   server.close();
-  try {
-    backendProcess.kill('SIGINT');
-  } catch (e) {}
+  if (backendProcess) {
+    try {
+      backendProcess.kill('SIGINT');
+    } catch (e) {}
+  }
   process.exit(0);
 }
 
 process.on('SIGINT', cleanup);
 process.on('SIGTERM', cleanup);
+});
