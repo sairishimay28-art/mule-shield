@@ -1468,7 +1468,129 @@ class MuleShieldHandler(BaseHTTPRequestHandler):
         else:
             self.send_json({"error": "Method not allowed on this path"}, status=405)
 
-# Vercel Serverless / Service Handler Export
+# ---------------------------------------------------------------------------
+# ASGI / WSGI / Vercel Serverless Exports
+# ---------------------------------------------------------------------------
+import asyncio
+
+class _MockSocket:
+    def __init__(self, raw_request):
+        self.rfile = io.BytesIO(raw_request)
+        self.wfile = io.BytesIO()
+
+    def makefile(self, mode, *args, **kwargs):
+        if "r" in mode:
+            return self.rfile
+        return self.wfile
+
+    def sendall(self, data):
+        self.wfile.write(data)
+
+def _dispatch_raw_http(method, path, headers_list, body):
+    raw_lines = [f"{method} {path} HTTP/1.1"]
+    for k, v in headers_list:
+        raw_lines.append(f"{k}: {v}")
+    raw_lines.append("")
+    raw_lines.append("")
+    raw_req = "\r\n".join(raw_lines).encode("latin-1") + (body or b"")
+    sock = _MockSocket(raw_req)
+    server = HTTPServer(("127.0.0.1", 8000), MuleShieldHandler)
+    MuleShieldHandler(sock, ("127.0.0.1", 12345), server)
+    resp_bytes = sock.wfile.getvalue()
+    parts = resp_bytes.split(b"\r\n\r\n", 1)
+    header_block = parts[0].decode("latin-1") if parts else "HTTP/1.1 500 Error"
+    resp_body = parts[1] if len(parts) > 1 else b""
+    first_line = header_block.split("\r\n")[0]
+    tokens = first_line.split(" ")
+    status_code = int(tokens[1]) if len(tokens) > 1 and tokens[1].isdigit() else 200
+    resp_headers = []
+    for line in header_block.split("\r\n")[1:]:
+        if ": " in line:
+            hk, hv = line.split(": ", 1)
+            resp_headers.append((hk.lower().encode("latin-1"), hv.encode("latin-1")))
+    return status_code, resp_headers, resp_body
+
+async def _asgi_app(scope, receive, send):
+    if scope["type"] == "lifespan":
+        while True:
+            msg = await receive()
+            if msg["type"] == "lifespan.startup":
+                await send({"type": "lifespan.startup.complete"})
+            elif msg["type"] == "lifespan.shutdown":
+                await send({"type": "lifespan.shutdown.complete"})
+                return
+    if scope["type"] != "http":
+        return
+
+    method = scope.get("method", "GET")
+    path = scope.get("path", "/")
+    qs = scope.get("query_string", b"").decode("latin-1")
+    if qs:
+        path = f"{path}?{qs}"
+
+    headers_list = [
+        (k.decode("latin-1"), v.decode("latin-1"))
+        for k, v in scope.get("headers", [])
+    ]
+
+    body_parts = []
+    more = True
+    while more:
+        msg = await receive()
+        body_parts.append(msg.get("body", b""))
+        more = msg.get("more_body", False)
+    body = b"".join(body_parts)
+
+    loop = asyncio.get_running_loop()
+    status_code, resp_headers, resp_body = await loop.run_in_executor(
+        None, _dispatch_raw_http, method, path, headers_list, body
+    )
+
+    await send({
+        "type": "http.response.start",
+        "status": status_code,
+        "headers": resp_headers,
+    })
+    await send({
+        "type": "http.response.body",
+        "body": resp_body,
+    })
+
+# If FastAPI is installed in production runtime, wrap as FastAPI application
+try:
+    from fastapi import FastAPI, Request, Response
+    _fastapi_app = FastAPI(title="Mule Shield Analytical Engine", version="1.0.0")
+
+    @_fastapi_app.api_route("/{full_path:path}", methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"])
+    async def _fastapi_catch_all(request: Request, full_path: str):
+        body = await request.body()
+        method = request.method
+        path = request.url.path
+        if request.url.query:
+            path = f"{path}?{request.url.query}"
+        headers_list = list(request.headers.items())
+        loop = asyncio.get_running_loop()
+        status_code, resp_headers, resp_body = await loop.run_in_executor(
+            None, _dispatch_raw_http, method, path, headers_list, body
+        )
+        response = Response(content=resp_body, status_code=status_code)
+        for k, v in resp_headers:
+            h_key = k.decode("latin-1") if isinstance(k, bytes) else k
+            h_val = v.decode("latin-1") if isinstance(v, bytes) else v
+            if h_key.lower() not in ("content-length", "content-type"):
+                response.headers[h_key] = h_val
+        if resp_headers:
+            for k, v in resp_headers:
+                h_key = k.decode("latin-1") if isinstance(k, bytes) else k
+                if h_key.lower() == "content-type":
+                    response.headers["content-type"] = v.decode("latin-1") if isinstance(v, bytes) else v
+        return response
+
+    app = _fastapi_app
+except ImportError:
+    app = _asgi_app
+
+application = app
 handler = MuleShieldHandler
 
 if __name__ == "__main__":
