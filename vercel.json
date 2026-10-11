@@ -3,6 +3,7 @@
   "services": {
     "frontend": {
       "root": ".",
+      "framework": null,
       "buildCommand": "npm run build",
       "outputDirectory": ".",
       "bindings": [

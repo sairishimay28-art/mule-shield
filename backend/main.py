@@ -838,6 +838,10 @@ class MuleShieldHandler(BaseHTTPRequestHandler):
         if clean_origin.endswith(".trycloudflare.com"):
             return origin
 
+        # Vercel deployment origin match (e.g. *.vercel.app)
+        if clean_origin.endswith(".vercel.app"):
+            return origin
+
         return None
 
     def _apply_cors_headers(self, allow_credentials=True):
